@@ -7,24 +7,36 @@ A CLI tool to check if newer versions are available for AUR packages hosted on G
 - Parse PKGBUILD files to extract package information
 - Check GitHub releases for the latest version
 - Compare current version with latest available
-- Clean, colorful output with emojis
+- Clean output
 
 ## Installation
 
 ```bash
-go build -o aur-version-tool
+go build -o aurvt
 ```
 
 ## Usage
 
+### Require in `go.mod`
+
+```go
+require github.com/brianrobt/aurvt v0.1.0
+```
+
+or
+
+```go
+import "github.com/brianrobt/aurvt@v0.1.0"
+```
+
 ```bash
-./aur-version-tool <package-directory>
+aurvt <package-directory>
 ```
 
 ### Example
 
 ```bash
-./aur-version-tool ../aur-pkgbuilds/alist
+aurvt alist
 ```
 
 Output:

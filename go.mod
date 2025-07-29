@@ -1,4 +1,4 @@
-module github.com/brianrobt/aur-version-tool
+module github.com/brianrobt/aurvt
 
 go 1.23
 

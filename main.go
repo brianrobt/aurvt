@@ -12,6 +12,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Version information
+var (
+	Version = "0.1.0"
+	Commit  = "development" // This can be set via build flags
+	Date    = "unknown"     // This can be set via build flags
+)
+
 type GitHubRelease struct {
 	TagName string `json:"tag_name"`
 }
@@ -24,12 +31,24 @@ type PKGBUILDInfo struct {
 
 func main() {
 	var rootCmd = &cobra.Command{
-		Use:   "aur-version-tool [package-directory]",
-		Short: "Check for newer versions of AUR packages on GitHub",
-		Long:  `A CLI tool to check if newer versions are available for AUR packages hosted on GitHub.`,
-		Args:  cobra.ExactArgs(1),
-		Run:   runVersionCheck,
+		Use:     "aurvt [package-directory]",
+		Short:   "Check for newer versions of AUR packages on GitHub",
+		Long:    `A CLI tool to check if newer versions are available for AUR packages hosted on GitHub.`,
+		Version: Version,
+		Args:    cobra.ExactArgs(1),
+		Run:     runVersionCheck,
 	}
+
+	// Add version command
+	rootCmd.AddCommand(&cobra.Command{
+		Use:   "version",
+		Short: "Print version information",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Printf("aurvt version %s\n", Version)
+			fmt.Printf("Commit: %s\n", Commit)
+			fmt.Printf("Build Date: %s\n", Date)
+		},
+	})
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -87,7 +106,7 @@ func parsePKGBUILD(filepath string) (*PKGBUILDInfo, error) {
 	}
 
 	text := string(content)
-	
+
 	// Extract pkgname
 	pkgname := extractValue(text, `pkgname\s*=\s*(.+)`)
 	if pkgname == "" {
@@ -138,7 +157,7 @@ func getLatestGitHubVersion(repoURL string) (string, error) {
 
 	owner := matches[1]
 	repo := matches[2]
-	
+
 	// Make API request
 	apiURL := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/latest", owner, repo)
 	resp, err := http.Get(apiURL)
