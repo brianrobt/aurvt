@@ -17,6 +17,17 @@
         ]
       }
     ],
+    [
+      "semantic-release-github-latest",
+      {
+        "assets": [
+          {
+            "path": "aurvt",
+            "label": "aurvt binary"
+          }
+        ]
+      }
+    ],
     "@semantic-release/git"
   ]
 }
