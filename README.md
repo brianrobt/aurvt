@@ -20,13 +20,13 @@ go build -o aurvt
 ### Require in `go.mod`
 
 ```go
-require github.com/brianrobt/aurvt v0.1.0
+require github.com/brianrobt/aurvt v1.0.0
 ```
 
 or
 
 ```go
-import "github.com/brianrobt/aurvt@v0.1.0"
+import "github.com/brianrobt/aurvt@v1.0.0"
 ```
 
 ```bash

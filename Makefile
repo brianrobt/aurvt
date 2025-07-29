@@ -12,14 +12,6 @@ quick:
 	@echo "Building aurvt (quick build)..."
 	@go build -o aurvt
 
-# publish: build
-# 	@echo "Publishing version $(AURVT_VERSION)..."
-# 	@echo "Creating tag v$(AURVT_VERSION)..."
-# 	@git tag v$(AURVT_VERSION)
-# 	@git push origin --tags
-# 	@echo "Publishing aurvt to GitHub Releases..."
-# 	@gh release create v$(AURVT_VERSION) aurvt
-
 # Clean build artifacts
 clean:
 	@echo "Cleaning build artifacts..."
@@ -51,7 +43,6 @@ help:
 	@echo "Available targets:"
 	@echo "  build     - Build with version information (default)"
 	@echo "  quick     - Quick build without version injection"
-	@echo "  publish   - Build, tag, and publish to GitHub Releases"
 	@echo "  clean     - Remove build artifacts"
 	@echo "  version   - Show version information"
 	@echo "  install   - Install to /usr/local/bin"
