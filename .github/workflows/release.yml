@@ -62,7 +62,7 @@ jobs:
         run: ./build.sh
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aurvt-binary
           path: aurvt
@@ -92,7 +92,7 @@ jobs:
       #   run: npm ci
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: aurvt-binary
           path: .
