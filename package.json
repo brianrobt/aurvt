@@ -1,0 +1,44 @@
+{
+  "name": "aurvt",
+  "version": "0.0.0-development",
+  "description": "AUR package build tool",
+  "main": "main.go",
+  "scripts": {
+    "build": "./build.sh",
+    "test": "go test ./...",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brianrobt/aurvt.git"
+  },
+  "keywords": [
+    "aur",
+    "archlinux",
+    "package",
+    "build",
+    "tool"
+  ],
+  "author": "Brian Thompson",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/git": "^10.0.0",
+    "@semantic-release/github": "^8.0.0",
+    "@semantic-release/npm": "^9.0.0",
+    "semantic-release": "^24.0.0"
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
+  }
+}
