@@ -12,10 +12,8 @@ A CLI tool to check if newer versions are available for AUR packages hosted on G
 ## Installation
 
 ```bash
-go build -o aurvt
+go install github.com/brianrobt/aurvt@latest
 ```
-
-## Usage
 
 ### Require in `go.mod`
 
@@ -26,8 +24,10 @@ require github.com/brianrobt/aurvt v1.0.0
 or
 
 ```go
-import "github.com/brianrobt/aurvt@v1.0.0"
+import "github.com/brianrobt/aurvt@latest"
 ```
+
+## Usage
 
 ```bash
 aurvt <package-directory>
@@ -62,4 +62,4 @@ Currently supports GitHub repositories only. The tool checks for:
 
 ## License
 
-MIT
+[GPL-3.0](./LICENSE)
