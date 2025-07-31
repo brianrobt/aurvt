@@ -7,6 +7,13 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
+      "@semantic-release/exec",
+      {
+        "successCmd": "npm run build",
+        "noReleaseCmd": "echo 'No release was created.'"
+      }
+    ],
+    [
       "@semantic-release/github",
       {
         "assets": [
