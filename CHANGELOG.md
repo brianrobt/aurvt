@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/brianrobt/aurvt/compare/v1.2.0...v1.3.0) (2025-07-31)
+
+
+### Features
+
+* **main.go:** add GitHubTag struct and implement URL format checks for source URLs to suggest tags endpoint and newer versions ([ea6013a](https://github.com/brianrobt/aurvt/commit/ea6013af86aaa977face3cf7ec515bcdcf6c923c))
+
 # [1.2.0](https://github.com/brianrobt/aurvt/compare/v1.1.0...v1.2.0) (2025-07-31)
 
 
