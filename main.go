@@ -23,6 +23,10 @@ type GitHubRelease struct {
 	TagName string `json:"tag_name"`
 }
 
+type GitHubTag struct {
+	Name string `json:"name"`
+}
+
 type PKGBUILDInfo struct {
 	Name    string
 	Version string
@@ -95,6 +99,11 @@ func runVersionCheck(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	// Check if source URLs use archive format and suggest tags endpoint
+	checkAndSuggestURLFormat(pkgInfo.Source, pkgInfo.URL)
+
+	// https://github.com/pyhunspell/pyhunspell/tags
+	// https://github.com/pyhunspell/pyhunspell/archive/refs/tags/0.5.5.tar.gz
 	if latestVersion == "" {
 		fmt.Println("❌ Could not fetch latest version")
 		return
@@ -321,7 +330,7 @@ func getLatestFromTags(owner, repo string) (string, error) {
 		return "", fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var tags []GitHubRelease
+	var tags []GitHubTag
 	if err := json.Unmarshal(body, &tags); err != nil {
 		return "", fmt.Errorf("failed to parse JSON response: %w", err)
 	}
@@ -331,6 +340,64 @@ func getLatestFromTags(owner, repo string) (string, error) {
 	}
 
 	// Get the first (latest) tag
-	version := strings.TrimPrefix(tags[0].TagName, "v")
+	version := strings.TrimPrefix(tags[0].Name, "v")
 	return version, nil
+}
+
+func checkAndSuggestURLFormat(sourceUrls []string, currentUrl string) {
+	for _, sourceUrl := range sourceUrls {
+		// Check if this is an archive URL (contains archive/refs/tags/)
+		if strings.Contains(sourceUrl, "archive/refs/tags/") {
+			// Extract the base URL from the current URL
+			baseURL := strings.TrimSuffix(currentUrl, "/")
+
+			fmt.Printf("⚠️  Source URL uses archive format: %s\n", sourceUrl)
+			fmt.Printf("   Consider using tags endpoint: %s/tags\n", baseURL)
+			fmt.Printf("   Example: %s/tags\n", baseURL)
+			fmt.Println("")
+
+			// Check tags page for newer versions
+			checkTagsPageForNewerVersion(baseURL, sourceUrl)
+		}
+	}
+}
+
+func checkTagsPageForNewerVersion(baseURL, sourceUrl string) {
+	// Extract current version from source URL
+	// Format: filename-version.tar.gz::url/archive/refs/tags/version.tar.gz
+	re := regexp.MustCompile(`archive/refs/tags/([^/]+)\.tar\.gz`)
+	matches := re.FindStringSubmatch(sourceUrl)
+	if len(matches) < 2 {
+		fmt.Println("   Could not extract current version from source URL")
+		return
+	}
+
+	currentVersion := matches[1]
+
+	// Extract owner/repo from base URL
+	urlRe := regexp.MustCompile(`github\.com/([^/]+)/([^/]+)`)
+	urlMatches := urlRe.FindStringSubmatch(baseURL)
+	if len(urlMatches) < 3 {
+		fmt.Println("   Could not extract owner/repo from URL")
+		return
+	}
+
+	owner := urlMatches[1]
+	repo := urlMatches[2]
+
+	// Get latest version from tags API
+	latestVersion, err := getLatestFromTags(owner, repo)
+	if err != nil {
+		// Instead of showing an error, just return silently
+		// This handles cases where the tags API might not be available or accessible
+		return
+	}
+
+	// Compare versions
+	if latestVersion != currentVersion {
+		fmt.Printf("   🔄 New version available on tags page: %s → %s\n", currentVersion, latestVersion)
+		fmt.Printf("   Tags page: %s/tags\n", baseURL)
+	} else {
+		fmt.Printf("   ✅ Current version %s is up to date on tags page\n", currentVersion)
+	}
 }
