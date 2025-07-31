@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/brianrobt/aurvt/compare/v1.3.0...v1.4.0) (2025-07-31)
+
+
+### Features
+
+* **main.go:** add functionality to ignore packages listed in .aurvtignore file during version check ([60327f3](https://github.com/brianrobt/aurvt/commit/60327f36dce9743d5d6ffcafc5715e9e65b8ece4))
+
 # [1.3.0](https://github.com/brianrobt/aurvt/compare/v1.2.0...v1.3.0) (2025-07-31)
 
 
