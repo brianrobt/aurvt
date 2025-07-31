@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/brianrobt/aurvt/compare/v1.1.0...v1.2.0) (2025-07-31)
+
+
+### Features
+
+* enhance release process with development commands and add a comprehensive development guide in DEVELOPMENT.md ([0ba4eb5](https://github.com/brianrobt/aurvt/commit/0ba4eb5ea5f88f748f49ee0bfb7e6ad91a694413))
+
 # [1.1.0](https://github.com/brianrobt/aurvt/compare/v1.0.0...v1.1.0) (2025-07-31)
 
 
