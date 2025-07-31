@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/brianrobt/aurvt/compare/v1.0.0...v1.1.0) (2025-07-31)
+
+
+### Features
+
+* **main.go:** add source field to PKGBUILDInfo and implement variable substitution for pkgname, pkgver, url, and source array to enhance package management functionality ([7b43352](https://github.com/brianrobt/aurvt/commit/7b4335247190647de21e754f9da4254186ebbae6))
+
 # 1.0.0 (2025-07-29)
 
 
