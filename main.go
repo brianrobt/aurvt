@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -67,6 +69,13 @@ func main() {
 func runVersionCheck(cmd *cobra.Command, args []string) {
 	packageDir := args[0]
 	pkgbuildPath := fmt.Sprintf("%s/PKGBUILD", packageDir)
+
+	// Check if package is in .aurvtignore file
+	packageName := filepath.Base(packageDir)
+	if isPackageIgnored(packageName) {
+		fmt.Printf("📋 Package '%s' is ignored (found in .aurvtignore)\n", packageName)
+		return
+	}
 
 	// Parse PKGBUILD
 	pkgInfo, err := parsePKGBUILD(pkgbuildPath)
@@ -360,6 +369,37 @@ func checkAndSuggestURLFormat(sourceUrls []string, currentUrl string) {
 			checkTagsPageForNewerVersion(baseURL, sourceUrl)
 		}
 	}
+}
+
+func isPackageIgnored(packageName string) bool {
+	ignoreFile := ".aurvtignore"
+	
+	// Check if .aurvtignore exists
+	if _, err := os.Stat(ignoreFile); os.IsNotExist(err) {
+		return false
+	}
+	
+	// Read .aurvtignore file
+	file, err := os.Open(ignoreFile)
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+	
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		// Skip empty lines and comments
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		// Check if package name matches
+		if line == packageName {
+			return true
+		}
+	}
+	
+	return false
 }
 
 func checkTagsPageForNewerVersion(baseURL, sourceUrl string) {
